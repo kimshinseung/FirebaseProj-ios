@@ -37,6 +37,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         if Auth.auth().currentUser != nil{
+            let newVC = self.storyboard?.instantiateViewController(identifier: "MainBoard")
+                    newVC?.modalTransitionStyle = .coverVertical
+                    newVC?.modalPresentationStyle = .automatic
+                    self.present(newVC!, animated: true, completion: nil)
+            
             emailTextField.text = "이미 로그인 된 상태입니다."
             
         }
