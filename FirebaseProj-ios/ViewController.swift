@@ -18,10 +18,10 @@ class ViewController: UIViewController {
     @IBAction func loginButtonTouched(_ sender: UIButton) {
         Auth.auth().signIn(withEmail: emailTextField.text!, password: pwTextField.text!) { (user, error) in
                     if user != nil{
-                        print("login success")
+                       
                     }
                     else{
-                        print("login fail")
+                        self.GoMain()
                     }
               }
     }
@@ -32,21 +32,26 @@ class ViewController: UIViewController {
                 newVC?.modalPresentationStyle = .automatic
                 self.present(newVC!, animated: true, completion: nil)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        if Auth.auth().currentUser != nil{
-            let newVC = self.storyboard?.instantiateViewController(identifier: "MainBoard")
-                    newVC?.modalTransitionStyle = .coverVertical
-                    newVC?.modalPresentationStyle = .automatic
-                    self.present(newVC!, animated: true, completion: nil)
-            
-            emailTextField.text = "이미 로그인 된 상태입니다."
-            
-        }
+    func GoMain(){
+        let vcName = self.storyboard?.instantiateViewController(withIdentifier: "MainBoard")
+                vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
+                vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
+                self.present(vcName!, animated: true, completion: nil)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+        if Auth.auth().currentUser != nil{
+            emailTextField.text = "이미 로그인 된 상태입니다."
+    
+        }
+    }
+    func goToViewController(where: String) {
+            let pushVC = self.storyboard?.instantiateViewController(withIdentifier: `where`)
+            self.navigationController?.pushViewController(pushVC!, animated: true)
+        }
 
 }
 
