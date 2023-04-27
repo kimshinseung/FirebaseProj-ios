@@ -19,6 +19,7 @@
 		A17EB9C929E8537E00598A13 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A17EB9C829E8537E00598A13 /* FirebaseAuth */; };
 		A17EB9CB29E8537E00598A13 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A17EB9CA29E8537E00598A13 /* FirebaseFirestore */; };
 		A17EB9CD29E8537E00598A13 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A17EB9CC29E8537E00598A13 /* FirebaseStorage */; };
+		A1F4CB4C29FA85F1007511A4 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F4CB4B29FA85F1007511A4 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		A17EB9BB29E84E8E00598A13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A17EB9BD29E84E8E00598A13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A17EB9C329E84EF200598A13 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A1F4CB4B29FA85F1007511A4 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				A17EB9B129E84E8D00598A13 /* SceneDelegate.swift */,
 				A17EB9B329E84E8D00598A13 /* ViewController.swift */,
 				A17EB9B529E84E8D00598A13 /* Main.storyboard */,
+				A1F4CB4B29FA85F1007511A4 /* MainViewController.swift */,
 				A1561AD929EB159900B67F30 /* SinginViewController.swift */,
 				A17EB9B829E84E8E00598A13 /* Assets.xcassets */,
 				A17EB9BA29E84E8E00598A13 /* LaunchScreen.storyboard */,
@@ -166,6 +169,7 @@
 				A17EB9B429E84E8D00598A13 /* ViewController.swift in Sources */,
 				A17EB9B029E84E8D00598A13 /* AppDelegate.swift in Sources */,
 				A17EB9B229E84E8D00598A13 /* SceneDelegate.swift in Sources */,
+				A1F4CB4C29FA85F1007511A4 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

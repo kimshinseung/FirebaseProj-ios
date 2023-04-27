@@ -24,6 +24,7 @@ class SinginViewController: UIViewController {
         Auth.auth().createUser(withEmail: EmailTextField.text!, password: PwTextField.text!){(user,error) in
             if user != nil{
                 self.showToast(message: "회원가입에 성공했습니다.")
+                self.dismiss(animated: true, completion: nil)
             }
             else{
                 self.showToast(message: "회원가입에 실패했습니다.")

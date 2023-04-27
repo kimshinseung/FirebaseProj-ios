@@ -18,10 +18,10 @@ class ViewController: UIViewController {
     @IBAction func loginButtonTouched(_ sender: UIButton) {
         Auth.auth().signIn(withEmail: emailTextField.text!, password: pwTextField.text!) { (user, error) in
                     if user != nil{
-                       
+                        self.GoMain()
                     }
                     else{
-                        self.GoMain()
+                        
                     }
               }
     }
@@ -41,13 +41,19 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
         if Auth.auth().currentUser != nil{
-            emailTextField.text = "이미 로그인 된 상태입니다."
-    
+            DispatchQueue.main.async {
+                self.GoMain()
+            }
         }
     }
+    
+    
+    
+    
+    
+    
+    
     func goToViewController(where: String) {
             let pushVC = self.storyboard?.instantiateViewController(withIdentifier: `where`)
             self.navigationController?.pushViewController(pushVC!, animated: true)
