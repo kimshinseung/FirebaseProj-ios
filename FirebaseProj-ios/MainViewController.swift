@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FSCalendar
+import FirebaseFirestore
 
 class MainViewController: UIViewController {
 
@@ -25,6 +26,13 @@ class MainViewController: UIViewController {
     }
     var selectedDate: Date? = Date()
     
+    struct Item {
+        let name: String
+        let price: Int
+    }
+    
+    var data: [Item] = [] //파이어베이스에서 가져오는 데이터 저장
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +46,11 @@ class MainViewController: UIViewController {
         if(selectdate.text == ""){
             selectdate.text = Date().toStringDate()
         }
+        
+    }
+    //뷰가 나올때마다 데이터를 가져온다.
+    override func viewWillAppear(_ animated: Bool) {
+        getData()
     }
     func GoBoard(des: String){
         let vcName = self.storyboard?.instantiateViewController(withIdentifier: des)
@@ -45,6 +58,31 @@ class MainViewController: UIViewController {
                 vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
                 self.present(vcName!, animated: true, completion: nil)
     }
+    // 파이어스토어에서 데이터 가져오기
+       func getData() {
+           let db = Firestore.firestore()
+           
+           db.collection("Data").getDocuments { (snapshot, error) in
+               if let error = error {
+                   print("데이터 가져오기 실패: \(error.localizedDescription)")
+                   return
+               }
+               
+               guard let documents = snapshot?.documents else {
+                   print("문서가 없습니다.")
+                   return
+               }
+               
+               self.data = documents.compactMap { document in
+                               guard let name = document.data()["name"] as? String,
+                                     let price = document.data()["price"] as? Int else {
+                                   return nil
+                               }
+                               return Item(name: name, price: price)
+                           }
+               self.TableView.reloadData()
+           }
+       }
 
 }
 extension MainViewController: FSCalendarDelegate, FSCalendarDataSource{
@@ -76,16 +114,17 @@ extension MainViewController: UITableViewDataSource {
 //        if let planGroup = planGroup{
 //            return planGroup.getPlans(date:selectedDate).count
 //        }
-        return 10    // planGroup가 생성되기전에 호출될 수도 있다
+        return data.count    // planGroup가 생성되기전에 호출될 수도 있다
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlanTableViewCell", for: indexPath)
+        let item = data[indexPath.row]
        
         (cell.contentView.subviews[0] as! UILabel).text = selectdate.text
-        (cell.contentView.subviews[1] as! UILabel).text = String(indexPath.row)
-        (cell.contentView.subviews[2] as! UILabel).text = "3"
+        (cell.contentView.subviews[1] as! UILabel).text = item.name
+        (cell.contentView.subviews[2] as! UILabel).text = String(item.price)
         
         return cell
     }
