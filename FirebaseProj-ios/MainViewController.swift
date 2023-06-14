@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
     struct Item {
         let name: String
         let price: Int
+        let uploadtime: String
     }
     
     var data: [Item] = [] //파이어베이스에서 가져오는 데이터 저장
@@ -52,6 +53,7 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         getData()
     }
+    
     func GoBoard(des: String){
         let vcName = self.storyboard?.instantiateViewController(withIdentifier: des)
                 vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
@@ -61,8 +63,8 @@ class MainViewController: UIViewController {
     // 파이어스토어에서 데이터 가져오기
        func getData() {
            let db = Firestore.firestore()
-           
-           db.collection("Data").getDocuments { (snapshot, error) in
+           //업로드시간순으로 내림차순 정렬
+           db.collection("Data").order(by: "uploadtime", descending: true).getDocuments { (snapshot, error) in
                if let error = error {
                    print("데이터 가져오기 실패: \(error.localizedDescription)")
                    return
@@ -75,10 +77,11 @@ class MainViewController: UIViewController {
                
                self.data = documents.compactMap { document in
                                guard let name = document.data()["name"] as? String,
-                                     let price = document.data()["price"] as? Int else {
+                                     let price = document.data()["price"] as? Int,
+                                    let uploadtime = document.data()["uploadtime"] as? String else {
                                    return nil
                                }
-                               return Item(name: name, price: price)
+                               return Item(name: name, price: price, uploadtime: uploadtime)
                            }
                self.TableView.reloadData()
            }
@@ -122,7 +125,7 @@ extension MainViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlanTableViewCell", for: indexPath)
         let item = data[indexPath.row]
        
-        (cell.contentView.subviews[0] as! UILabel).text = selectdate.text
+        (cell.contentView.subviews[0] as! UILabel).text = item.uploadtime
         (cell.contentView.subviews[1] as! UILabel).text = item.name
         (cell.contentView.subviews[2] as! UILabel).text = String(item.price)
         
