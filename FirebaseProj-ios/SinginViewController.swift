@@ -14,11 +14,20 @@ class SinginViewController: UIViewController {
     
     @IBOutlet weak var PwTextField: UITextField!
     
+    @IBOutlet weak var pweye: UIButton!
     //뒤로 나가는 코드
     @IBAction func ExitButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func pweyebtn(_ sender: Any) {
+        PwTextField.isSecureTextEntry.toggle()//보안설정 반전
+        pweye.isSelected.toggle() //버튼선택 상태 반전
+        let eyeImage = pweye.isSelected ? "password shown eye icon" : "password hidden eye icon"
+        pweye.setImage(UIImage(named: eyeImage), for: .normal)
+        self.PwTextField.rightView = pweye
+        self.PwTextField.rightViewMode = .always
+    }
     
     @IBAction func SingInButton(_ sender: UIButton) {
         Auth.auth().createUser(withEmail: EmailTextField.text!, password: PwTextField.text!){(user,error) in
