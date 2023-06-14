@@ -30,6 +30,7 @@ class MainViewController: UIViewController {
         let name: String
         let price: Int
         let uploadtime: String
+        let documentID: String
     }
     
     var data: [Item] = [] //파이어베이스에서 가져오는 데이터 저장
@@ -81,7 +82,7 @@ class MainViewController: UIViewController {
                                     let uploadtime = document.data()["uploadtime"] as? String else {
                                    return nil
                                }
-                               return Item(name: name, price: price, uploadtime: uploadtime)
+                               return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID)
                            }
                self.TableView.reloadData()
            }
@@ -131,6 +132,12 @@ extension MainViewController: UITableViewDataSource {
         
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 선택된 셀의 문서 ID를 가져옵니다.
+        let selectedId = data[indexPath.row].documentID
+        print(selectedId)
+    }
+
 }
 extension MainViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
