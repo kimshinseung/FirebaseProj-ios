@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A147E69E2A39D14600587855 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147E69D2A39D14600587855 /* AddViewController.swift */; };
 		A1561ADA29EB159900B67F30 /* SinginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1561AD929EB159900B67F30 /* SinginViewController.swift */; };
 		A17EB9B029E84E8D00598A13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EB9AF29E84E8D00598A13 /* AppDelegate.swift */; };
 		A17EB9B229E84E8D00598A13 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EB9B129E84E8D00598A13 /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A147E69D2A39D14600587855 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		A1561AD929EB159900B67F30 /* SinginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinginViewController.swift; sourceTree = "<group>"; };
 		A17EB9AC29E84E8D00598A13 /* FirebaseProj-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FirebaseProj-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A17EB9AF29E84E8D00598A13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				A1DA90722A332A3200ECE2D4 /* ExtendedDate.swift */,
 				A17EB9AF29E84E8D00598A13 /* AppDelegate.swift */,
+				A147E69D2A39D14600587855 /* AddViewController.swift */,
 				A17EB9B129E84E8D00598A13 /* SceneDelegate.swift */,
 				A17EB9B329E84E8D00598A13 /* ViewController.swift */,
 				A17EB9B529E84E8D00598A13 /* Main.storyboard */,
@@ -177,6 +180,7 @@
 			files = (
 				A1DA906E2A3320A400ECE2D4 /* ProfileViewController.swift in Sources */,
 				A1561ADA29EB159900B67F30 /* SinginViewController.swift in Sources */,
+				A147E69E2A39D14600587855 /* AddViewController.swift in Sources */,
 				A17EB9B429E84E8D00598A13 /* ViewController.swift in Sources */,
 				A17EB9B029E84E8D00598A13 /* AppDelegate.swift in Sources */,
 				A17EB9B229E84E8D00598A13 /* SceneDelegate.swift in Sources */,

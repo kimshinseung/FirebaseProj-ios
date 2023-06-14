@@ -18,7 +18,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var selectdate: UILabel!
     
     @IBAction func Mypagebtn(_ sender: Any) {
-        GoPrifile()
+        GoBoard(des: "MypageBoard")
+    }
+    @IBAction func Addbtn(_ sender: UIButton) {
+        GoBoard(des: "AddBoard")
     }
     var selectedDate: Date? = Date()
     
@@ -30,14 +33,14 @@ class MainViewController: UIViewController {
         
         TableView.dataSource = self
         TableView.delegate = self
-        TableView.isEditing = true
+        //TableView.isEditing = true
         
         if(selectdate.text == ""){
             selectdate.text = Date().toStringDate()
         }
     }
-    func GoPrifile(){
-        let vcName = self.storyboard?.instantiateViewController(withIdentifier: "MypageBoard")
+    func GoBoard(des: String){
+        let vcName = self.storyboard?.instantiateViewController(withIdentifier: des)
                 vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
                 vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
                 self.present(vcName!, animated: true, completion: nil)
@@ -73,31 +76,17 @@ extension MainViewController: UITableViewDataSource {
 //        if let planGroup = planGroup{
 //            return planGroup.getPlans(date:selectedDate).count
 //        }
-        return 0    // planGroup가 생성되기전에 호출될 수도 있다
+        return 10    // planGroup가 생성되기전에 호출될 수도 있다
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        //let cell = UITableViewCell(style: .value1, reuseIdentifier: "") // TableViewCell을 생성한다
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlanTableViewCell")!
-        
-//        // planGroup는 대략 1개월의 플랜을 가지고 있다.
-//        let plan = planGroup.getPlans(date:selectedDate)[indexPath.row] // Date를 주지않으면 전체 plan을 가지고 온다
-
-
-        (cell.contentView.subviews[0] as! UILabel).text = "1"
-        (cell.contentView.subviews[1] as! UILabel).text = "2"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlanTableViewCell", for: indexPath)
+       
+        (cell.contentView.subviews[0] as! UILabel).text = selectdate.text
+        (cell.contentView.subviews[1] as! UILabel).text = String(indexPath.row)
         (cell.contentView.subviews[2] as! UILabel).text = "3"
         
-        
-//        cell.accessoryType = .none //악세서리 추가
-//        cell.accessoryView = nil
-//        if indexPath.row % 2 == 0 {
-//            cell.accessoryType = .detailDisclosureButton    // type
-//        }else{
-//            cell.accessoryView = UISwitch(frame: CGRect())  // View
-//        }
-
         return cell
     }
 }
