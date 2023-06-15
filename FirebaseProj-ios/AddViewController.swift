@@ -28,6 +28,17 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
     }
     
     @IBAction func Enrollbtn(_ sender: UIButton) {
+        //textField가 null이면 필수값 입력해야됨.
+        guard let priceText = Price.text, !priceText.isEmpty else {
+                showToast(message: "가격을 입력하세요")
+                return
+            }
+            
+            guard let nameText = Name.text, !nameText.isEmpty else {
+                showToast(message: "이름을 입력하세요")
+                return
+            }
+        
         let price = Price.text
         let name = Name.text
         let uploadtime = time?.toStringDateTime()
@@ -38,7 +49,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
             "name" : name as Any
         ]
         if let image = ImageView.image {
-
                 // 업로드할 이미지의 고유한 파일 이름 생성
                 let imageName = "\(UUID().uuidString).jpg"
                 
@@ -73,14 +83,15 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
                         guard let progress = snapshot.progress else {
                             return
                         }
-                        
-                        let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
-                        print("Upload progress: \(percentComplete)%")
+                        //이미지 업로드 퍼센티지
+                        let percentComplete = 100 * Int(progress.completedUnitCount) / Int(progress.totalUnitCount)
+                        self.showToast(message: "이미지 업로드: \(percentComplete)%")
+                        //print("Upload progress: \(percentComplete)%")
                     }
                     
                     uploadTask.observe(.success) { (snapshot) in
                         // 이미지 업로드 완료 처리
-                        print("Image upload complete")
+                        self.showToast(message: "게시글 업로드 성공!")
                     }
                 }
         }else{

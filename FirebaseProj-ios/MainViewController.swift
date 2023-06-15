@@ -9,6 +9,7 @@ import UIKit
 import FirebaseAuth
 import FSCalendar
 import FirebaseFirestore
+import FirebaseStorage
 
 class MainViewController: UIViewController {
 
@@ -31,7 +32,9 @@ class MainViewController: UIViewController {
         let price: Int
         let uploadtime: String
         let documentID: String
+        let imageURL: String
     }
+    let storage = Storage.storage()
     
     var data: [Item] = [] //파이어베이스에서 가져오는 데이터 저장
     
@@ -43,7 +46,9 @@ class MainViewController: UIViewController {
         
         TableView.dataSource = self
         TableView.delegate = self
-        //TableView.isEditing = true
+        //TableView.isEditing = true //바로 에디팅할수 있게 하는 코드
+        TableView.estimatedRowHeight = 150
+        TableView.rowHeight = 100
         
         if(selectdate.text == ""){
             selectdate.text = Date().toStringDate()
@@ -52,7 +57,7 @@ class MainViewController: UIViewController {
     }
     //뷰가 나올때마다 데이터를 가져온다.
     override func viewWillAppear(_ animated: Bool) {
-        getData()
+        getData(date: Date().toStringDate())
     }
     
     func GoBoard(des: String){
@@ -62,10 +67,14 @@ class MainViewController: UIViewController {
                 self.present(vcName!, animated: true, completion: nil)
     }
     // 파이어스토어에서 데이터 가져오기
-       func getData() {
-           let db = Firestore.firestore()
-           //업로드시간순으로 내림차순 정렬
-           db.collection("Data").order(by: "uploadtime", descending: true).getDocuments { (snapshot, error) in
+    func getData(date: String) {
+        let db = Firestore.firestore()
+        // 종료 시간을 해당 날짜의 23:59:59으로 설정
+        let endDate = date+"23:59:59"
+
+        
+        //업로드시간순으로 내림차순 정렬 및 해당 날짜의 게시물들만 보이기
+        db.collection("Data").whereField("uploadtime", isGreaterThanOrEqualTo: date).whereField("uploadtime", isLessThanOrEqualTo: endDate).order(by: "uploadtime", descending: true).getDocuments { (snapshot, error) in
                if let error = error {
                    print("데이터 가져오기 실패: \(error.localizedDescription)")
                    return
@@ -77,13 +86,25 @@ class MainViewController: UIViewController {
                }
                
                self.data = documents.compactMap { document in
-                               guard let name = document.data()["name"] as? String,
-                                     let price = document.data()["price"] as? Int,
-                                    let uploadtime = document.data()["uploadtime"] as? String else {
-                                   return nil
-                               }
-                               return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID)
-                           }
+                   //이미지가 없으면 이미지에 nil를 넣어서 구분한다.
+                   if(document.data()["imageURL"] as? String == nil){
+                       guard let name = document.data()["name"] as? String,
+                             let price = document.data()["price"] as? Int,
+                             let uploadtime = document.data()["uploadtime"] as? String,
+                             let imageURL = "nil" as? String else {
+                           return nil
+                       }
+                       return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID,imageURL: imageURL)
+                   }else{ //이미지가 있으면 그대로 진행
+                       guard let name = document.data()["name"] as? String,
+                             let price = document.data()["price"] as? Int,
+                             let uploadtime = document.data()["uploadtime"] as? String,
+                             let imageURL = document.data()["imageURL"] as? String else {
+                           return nil
+                       }
+                       return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID,imageURL: imageURL)
+                   }
+               }
                self.TableView.reloadData()
            }
        }
@@ -94,6 +115,7 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource{
         // 날짜가 선택되면 호출된다
         selectedDate = date.setCurrentTime()
         selectdate.text = selectedDate?.toStringDate()
+        getData(date:selectedDate?.toStringDate() ?? "")
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -125,10 +147,34 @@ extension MainViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlanTableViewCell", for: indexPath)
         let item = data[indexPath.row]
-       
-        (cell.contentView.subviews[0] as! UILabel).text = item.uploadtime
+        
+        //이미지가 없는 경우
+        if(item.imageURL == "nil"){
+            (cell.contentView.subviews[2] as! UIImageView).image = nil
+        }else{ //이미지가 있는 경우
+            let imageview = (cell.contentView.subviews[2] as! UIImageView)
+            
+            // URL로부터 이미지를 비동기적으로 다운로드하고 표시합니다.
+            if let url = URL(string: item.imageURL) {
+                DispatchQueue.global().async {
+                    if let data = try? Data(contentsOf: url) {
+                        // 다운로드한 데이터로부터 이미지를 생성합니다.
+                        if let image = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                // 이미지를 이미지 뷰에 설정합니다.
+                                imageview.image = image
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        let uploadtime = timeAgoSinceUploaded(uploadTime: item.uploadtime)
+            
+        (cell.contentView.subviews[0] as! UILabel).text = uploadtime
         (cell.contentView.subviews[1] as! UILabel).text = item.name
-        (cell.contentView.subviews[2] as! UILabel).text = String(item.price)
+        (cell.contentView.subviews[3] as! UILabel).text = String(item.price)+"원"
         
         return cell
     }
@@ -137,6 +183,37 @@ extension MainViewController: UITableViewDataSource {
         let selectedId = data[indexPath.row].documentID
         print(selectedId)
     }
+    func timeAgoSinceUploaded(uploadTime: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss" // uploadtime의 형식에 맞게 설정
+        
+        guard let uploadDate = dateFormatter.date(from: uploadTime) else {
+            return "" // 날짜 변환 실패 시 빈 문자열 반환
+        }
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let components = calendar.dateComponents([.minute], from: uploadDate, to: currentDate)
+        if let minutes = components.minute {
+            if minutes < 1 {
+                return "방금 전"
+            } else if minutes < 60 {
+                return "\(minutes)분 전"
+            } else {
+                let hours = minutes / 60
+                if hours < 24 {
+                    return "\(hours)시간 전"
+                } else {
+                    let days = hours / 24
+                    return "\(days)일 전"
+                }
+            }
+        }
+        
+        return "" // 처리못한경우 nil값 반환
+    }
+
 
 }
 extension MainViewController: UITableViewDelegate{
