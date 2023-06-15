@@ -8,9 +8,11 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseAuth
 
 class AddViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
+    @IBOutlet weak var kakaoid: UITextField!
     @IBOutlet weak var content: UITextField!
     @IBOutlet weak var Name: UITextField!
     @IBOutlet weak var Price: UITextField!
@@ -43,12 +45,14 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
         let name = Name.text
         let uploadtime = time?.toStringDateTime()
         let content = content.text
+        let uid = Auth.auth().currentUser?.uid
         
         var data : [String: Any] = [
             "uploadtime" : uploadtime as Any,
             "price" : Int(price!) as Any,
             "name" : name as Any,
-            "content" : content as Any
+            "content" : content as Any,
+            "uid" : uid as Any
         ]
         if let image = ImageView.image {
                 // 업로드할 이미지의 고유한 파일 이름 생성

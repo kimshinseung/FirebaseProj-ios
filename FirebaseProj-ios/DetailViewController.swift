@@ -55,7 +55,7 @@ class DetailViewController: UIViewController {
                     self.Price.text = String(user.price) + "원"
                     self.Detailtitle.text = user.name
                     self.content.text = user.content
-                    self.uploadtime.text = user.uploadtime
+                    self.uploadtime.text = user.uploadtime+", "+self.timeAgoSinceUploaded(uploadTime: user.uploadtime)
                 }
             }else{
                 if let data = document.data(),
@@ -97,4 +97,36 @@ class DetailViewController: UIViewController {
     }
 
 
+}
+extension DetailViewController{
+    func timeAgoSinceUploaded(uploadTime: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss" // uploadtime의 형식에 맞게 설정
+        
+        guard let uploadDate = dateFormatter.date(from: uploadTime) else {
+            return "" // 날짜 변환 실패 시 빈 문자열 반환
+        }
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let components = calendar.dateComponents([.minute], from: uploadDate, to: currentDate)
+        if let minutes = components.minute {
+            if minutes < 1 {
+                return "방금 전"
+            } else if minutes < 60 {
+                return "\(minutes)분 전"
+            } else {
+                let hours = minutes / 60
+                if hours < 24 {
+                    return "\(hours)시간 전"
+                } else {
+                    let days = hours / 24
+                    return "\(days)일 전"
+                }
+            }
+        }
+        
+        return "" // 처리못한경우 nil값 반환
+    }
 }
