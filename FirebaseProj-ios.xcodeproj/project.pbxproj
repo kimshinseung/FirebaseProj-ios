@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A147E69E2A39D14600587855 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147E69D2A39D14600587855 /* AddViewController.swift */; };
 		A147E6A02A3B0B8200587855 /* Extension_UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147E69F2A3B0B8200587855 /* Extension_UIView.swift */; };
+		A147E6A22A3B232F00587855 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147E6A12A3B232F00587855 /* DetailViewController.swift */; };
 		A1561ADA29EB159900B67F30 /* SinginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1561AD929EB159900B67F30 /* SinginViewController.swift */; };
 		A17EB9B029E84E8D00598A13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EB9AF29E84E8D00598A13 /* AppDelegate.swift */; };
 		A17EB9B229E84E8D00598A13 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EB9B129E84E8D00598A13 /* SceneDelegate.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		A147E69D2A39D14600587855 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		A147E69F2A3B0B8200587855 /* Extension_UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_UIView.swift; sourceTree = "<group>"; };
+		A147E6A12A3B232F00587855 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A1561AD929EB159900B67F30 /* SinginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinginViewController.swift; sourceTree = "<group>"; };
 		A17EB9AC29E84E8D00598A13 /* FirebaseProj-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FirebaseProj-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A17EB9AF29E84E8D00598A13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				A17EB9B129E84E8D00598A13 /* SceneDelegate.swift */,
 				A17EB9B329E84E8D00598A13 /* ViewController.swift */,
 				A17EB9B529E84E8D00598A13 /* Main.storyboard */,
+				A147E6A12A3B232F00587855 /* DetailViewController.swift */,
 				A1DA906D2A3320A400ECE2D4 /* ProfileViewController.swift */,
 				A1F4CB4B29FA85F1007511A4 /* MainViewController.swift */,
 				A1561AD929EB159900B67F30 /* SinginViewController.swift */,
@@ -188,6 +191,7 @@
 				A17EB9B029E84E8D00598A13 /* AppDelegate.swift in Sources */,
 				A147E6A02A3B0B8200587855 /* Extension_UIView.swift in Sources */,
 				A17EB9B229E84E8D00598A13 /* SceneDelegate.swift in Sources */,
+				A147E6A22A3B232F00587855 /* DetailViewController.swift in Sources */,
 				A1F4CB4C29FA85F1007511A4 /* MainViewController.swift in Sources */,
 				A1DA90732A332A3200ECE2D4 /* ExtendedDate.swift in Sources */,
 			);

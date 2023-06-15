@@ -62,9 +62,9 @@ class MainViewController: UIViewController {
     
     func GoBoard(des: String){
         let vcName = self.storyboard?.instantiateViewController(withIdentifier: des)
-                vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
-                vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
-                self.present(vcName!, animated: true, completion: nil)
+        vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
+        vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
+        self.present(vcName!, animated: true, completion: nil)
     }
     // 파이어스토어에서 데이터 가져오기
     func getData(date: String) {
@@ -126,10 +126,7 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource{
     
     // 이함수를 fsCalendar.reloadData()에 의하여 모든 날짜에 대하여 호출된다.
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-//        let plans = planGroup.getPlans(date: date)
-//        if plans.count > 0 {
-//            return "[\(plans.count)]"    // date에 해당한 plans의 갯수를 뱃지로 출력한다
-//        }
+
         return nil
     }
 }
@@ -178,11 +175,22 @@ extension MainViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 선택된 셀의 문서 ID를 가져옵니다.
         let selectedId = data[indexPath.row].documentID
         print(selectedId)
+        //셀의 문서id를 보내고 뷰 변경
+        let vcName = self.storyboard?.instantiateViewController(withIdentifier: "DetailBoard") as? DetailViewController
+        vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
+        vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
+        vcName?.id = selectedId
+        self.present(vcName!, animated: true, completion: nil)
     }
+    
+    
+    
     func timeAgoSinceUploaded(uploadTime: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss" // uploadtime의 형식에 맞게 설정
