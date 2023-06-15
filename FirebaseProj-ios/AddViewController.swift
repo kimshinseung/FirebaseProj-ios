@@ -45,6 +45,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
         let name = Name.text
         let uploadtime = time?.toStringDateTime()
         let content = content.text
+        let kakaoid = kakaoid.text
         let uid = Auth.auth().currentUser?.uid
         
         var data : [String: Any] = [
@@ -52,7 +53,9 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
             "price" : Int(price!) as Any,
             "name" : name as Any,
             "content" : content as Any,
-            "uid" : uid as Any
+            "uid" : uid as Any,
+            "kakaoid" : kakaoid as Any,
+            "seevalue" : Int(0) as Any
         ]
         if let image = ImageView.image {
                 // 업로드할 이미지의 고유한 파일 이름 생성

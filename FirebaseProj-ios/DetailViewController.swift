@@ -11,11 +11,14 @@ import FirebaseStorage
 
 class DetailViewController: UIViewController {
     
+    @IBOutlet weak var seevalue: UILabel!
     @IBOutlet weak var Price: UILabel!
     @IBOutlet weak var ImageView: UIImageView!
     @IBOutlet weak var content: UILabel!
     
+    @IBOutlet weak var kakaoid: UILabel!
     @IBOutlet weak var uploadtime: UILabel!
+    
     @IBAction func Backbtn(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -28,6 +31,7 @@ class DetailViewController: UIViewController {
         let uploadtime: String
         let imageURL: String
         let content: String
+        let kakaoid: String
     }
     let storage = Storage.storage()
     let db = Firestore.firestore()
@@ -50,12 +54,14 @@ class DetailViewController: UIViewController {
                 let name = data["name"] as? String,
                 let content = data["content"] as? String,
                 let uploadtime = data["uploadtime"] as? String,
+                let kakao = data["kakaoid"] as? String,
                 let imageURL = "nil" as? String {
-                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageURL, content: content)
+                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageURL, content: content, kakaoid: kakao)
                     self.Price.text = String(user.price) + "원"
                     self.Detailtitle.text = user.name
                     self.content.text = user.content
                     self.uploadtime.text = user.uploadtime+", "+self.timeAgoSinceUploaded(uploadTime: user.uploadtime)
+                    self.kakaoid.text = user.kakaoid
                 }
             }else{
                 if let data = document.data(),
@@ -63,12 +69,14 @@ class DetailViewController: UIViewController {
                 let name = data["name"] as? String,
                 let content = data["content"] as? String,
                 let uploadtime = data["uploadtime"] as? String,
+                let kakao = data["kakaoid"] as? String,
                 let imageurl = data["imageURL"] as? String {
-                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageurl, content: content)
+                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageurl, content: content, kakaoid: kakao)
                     self.Price.text = String(user.price) + "원"
                     self.Detailtitle.text = user.name
                     self.content.text = user.content
                     self.uploadtime.text = user.uploadtime
+                    self.kakaoid.text = user.kakaoid
                     // URL로부터 이미지를 비동기적으로 다운로드하고 표시합니다.
                     if let url = URL(string: user.imageURL) {
                         DispatchQueue.global().async {
@@ -86,15 +94,21 @@ class DetailViewController: UIViewController {
                 
                 }
             }
-            
-            
-            
-            
-            
-        }
+            //조회수 보이기
+            let fieldName = "seevalue"
+            self.db.collection("Data").document(self.id).updateData([fieldName: FieldValue.increment(Int64(1))]){ error in
+                if let error = error {
+                        print("필드 업데이트 실패: \(error.localizedDescription)")
+                        return
+                    }
 
-       
-    }
+                    print("필드 업데이트 성공")
+            }
+        
+        }
+        
+        
+    }//viewdidload
 
 
 }
