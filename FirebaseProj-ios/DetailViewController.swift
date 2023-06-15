@@ -32,6 +32,7 @@ class DetailViewController: UIViewController {
         let imageURL: String
         let content: String
         let kakaoid: String
+        let count: Int
     }
     let storage = Storage.storage()
     let db = Firestore.firestore()
@@ -55,13 +56,15 @@ class DetailViewController: UIViewController {
                 let content = data["content"] as? String,
                 let uploadtime = data["uploadtime"] as? String,
                 let kakao = data["kakaoid"] as? String,
+                let count = data["seevalue"] as? Int,
                 let imageURL = "nil" as? String {
-                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageURL, content: content, kakaoid: kakao)
+                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageURL, content: content, kakaoid: kakao, count: count)
                     self.Price.text = String(user.price) + "원"
                     self.Detailtitle.text = user.name
                     self.content.text = user.content
                     self.uploadtime.text = user.uploadtime+", "+self.timeAgoSinceUploaded(uploadTime: user.uploadtime)
                     self.kakaoid.text = user.kakaoid
+                    self.seevalue.text = String(user.count)
                 }
             }else{
                 if let data = document.data(),
@@ -70,13 +73,15 @@ class DetailViewController: UIViewController {
                 let content = data["content"] as? String,
                 let uploadtime = data["uploadtime"] as? String,
                 let kakao = data["kakaoid"] as? String,
+                   let count = data["seevalue"] as? Int,
                 let imageurl = data["imageURL"] as? String {
-                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageurl, content: content, kakaoid: kakao)
+                    let user = Item(name: name, price: price, uploadtime: uploadtime, imageURL: imageurl, content: content, kakaoid: kakao,count:count)
                     self.Price.text = String(user.price) + "원"
                     self.Detailtitle.text = user.name
                     self.content.text = user.content
                     self.uploadtime.text = user.uploadtime
                     self.kakaoid.text = user.kakaoid
+                    self.seevalue.text = String(user.count)
                     // URL로부터 이미지를 비동기적으로 다운로드하고 표시합니다.
                     if let url = URL(string: user.imageURL) {
                         DispatchQueue.global().async {

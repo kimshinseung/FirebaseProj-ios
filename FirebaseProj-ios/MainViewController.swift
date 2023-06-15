@@ -58,6 +58,7 @@ class MainViewController: UIViewController {
     //뷰가 나올때마다 데이터를 가져온다.
     override func viewWillAppear(_ animated: Bool) {
         getData(date: Date().toStringDate())
+        selectdate.text = Date().toStringDate()
     }
     
     func GoBoard(des: String){
