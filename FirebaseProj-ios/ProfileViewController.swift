@@ -143,23 +143,50 @@ extension ProfileViewController: UITableViewDataSource,UITableViewDelegate {
         (cell.contentView.subviews[0] as! UILabel).text = uploadtime
         (cell.contentView.subviews[1] as! UILabel).text = item.name
         (cell.contentView.subviews[3] as! UILabel).text = String(item.price)+"원"
+        //거래완료시 가격을 거래완료로 변경
+        if(item.visibled == false){
+            (cell.contentView.subviews[3] as! UILabel).text = "거래 완료"
+        }
         
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 선택된 셀의 문서 ID를 가져옵니다.
-        let selectedId = data[indexPath.row].documentID
-        print(selectedId)
-        //셀의 문서id를 보내고 뷰 변경
-        let vcName = self.storyboard?.instantiateViewController(withIdentifier: "DetailBoard") as? DetailViewController
-        vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
-        vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
-        vcName?.id = selectedId
-        self.present(vcName!, animated: true, completion: nil)
+        
+        let item = data[indexPath.row]
+        //거래완료이면 셀 선택해도 못 들어감.
+        if(item.visibled == false){
+            showToast(message: "거래완료된 게시글입니다.")
+        }else{
+            // 선택된 셀의 문서 ID를 가져옵니다.
+            let selectedId = data[indexPath.row].documentID
+            print(selectedId)
+            //셀의 문서id를 보내고 뷰 변경
+            let vcName = self.storyboard?.instantiateViewController(withIdentifier: "DetailBoard") as? DetailViewController
+            vcName?.modalPresentationStyle = .fullScreen //전체화면으로 보이게 설정
+            vcName?.modalTransitionStyle = .crossDissolve //전환 애니메이션 설정
+            vcName?.id = selectedId
+            self.present(vcName!, animated: true, completion: nil)
+        }
     }
-    
+    func showToast(message : String, font: UIFont = UIFont.systemFont(ofSize: 14.0)) {
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 75, y: self.view.frame.size.height-100, width: 150, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
     
     
     func timeAgoSinceUploaded(uploadTime: String) -> String {
@@ -193,4 +220,3 @@ extension ProfileViewController: UITableViewDataSource,UITableViewDelegate {
         return "" // 처리못한경우 nil값 반환
     }
 }
-
