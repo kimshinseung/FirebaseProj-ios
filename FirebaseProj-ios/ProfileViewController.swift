@@ -19,6 +19,7 @@ class ProfileViewController: UIViewController {
         let uploadtime: String
         let documentID: String
         let imageURL: String
+        let visibled: Bool
     }
     var selectedDate: Date? = Date()
     
@@ -77,19 +78,21 @@ class ProfileViewController: UIViewController {
                    if(document.data()["imageURL"] as? String == nil){
                        guard let name = document.data()["name"] as? String,
                              let price = document.data()["price"] as? Int,
+                             let visible = document.data()["visibled"] as? Bool,
                              let uploadtime = document.data()["uploadtime"] as? String,
                              let imageURL = "nil" as? String else {
                            return nil
                        }
-                       return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID,imageURL: imageURL)
+                       return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID,imageURL: imageURL,visibled: visible)
                    }else{ //이미지가 있으면 그대로 진행
                        guard let name = document.data()["name"] as? String,
                              let price = document.data()["price"] as? Int,
+                             let visible = document.data()["visibled"] as? Bool,
                              let uploadtime = document.data()["uploadtime"] as? String,
                              let imageURL = document.data()["imageURL"] as? String else {
                            return nil
                        }
-                       return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID,imageURL: imageURL)
+                       return Item(name: name, price: price, uploadtime: uploadtime,documentID: document.documentID,imageURL: imageURL,visibled: visible)
                    }
                }
                self.TableView.reloadData()

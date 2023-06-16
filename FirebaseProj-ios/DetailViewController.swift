@@ -8,9 +8,11 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseAuth
 
 class DetailViewController: UIViewController {
     
+    @IBOutlet weak var completebtn: UIButton!
     @IBOutlet weak var seevalue: UILabel!
     @IBOutlet weak var Price: UILabel!
     @IBOutlet weak var ImageView: UIImageView!
@@ -37,9 +39,26 @@ class DetailViewController: UIViewController {
     let storage = Storage.storage()
     let db = Firestore.firestore()
 
+    @IBAction func completeclick(_ sender: Any) {
+        //거래완료 버튼 visbled필드 변경
+        let fieldName = "visibled"
+        self.db.collection("Data").document(self.id).updateData([fieldName: false]){ error in
+            if let error = error {
+                    print("필드 업데이트 실패: \(error.localizedDescription)")
+                    return
+                }
+
+                print("필드 업데이트 성공")
+                self.dismiss(animated: true, completion: nil)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //거래완료 버튼 숨기기
+        completebtn.isHidden = true
+        
+        
         db.collection("Data").document(id).getDocument{ (document, error) in
             if let error = error {
                 print("데이터 가져오기 실패: \(error.localizedDescription)")
@@ -49,6 +68,11 @@ class DetailViewController: UIViewController {
                 print("문서가 없습니다.")
                 return
             }
+            //uid가 같으면 거래완료 버튼 활성화
+            if(document.data()?["uid"] as! String==Auth.auth().currentUser?.uid ?? ""){
+                self.completebtn.isHidden = false
+            }
+            
             if(document.data()?["imageURL"] as? String == nil){
                 if let data = document.data(),
                 let price = data["price"] as? Int,
@@ -109,6 +133,7 @@ class DetailViewController: UIViewController {
 
                     print("필드 업데이트 성공")
             }
+            
         
         }
         

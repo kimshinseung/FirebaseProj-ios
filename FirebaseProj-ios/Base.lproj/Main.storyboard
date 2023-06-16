@@ -193,6 +193,15 @@
                                 <color key="textColor" systemColor="systemGray2Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZR-cL-Jv0">
+                                <rect key="frame" x="278" y="743" width="88" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="거래 완료"/>
+                                <connections>
+                                    <action selector="completeclick:" destination="jtA-b5-o3w" eventType="touchUpInside" id="3cP-cm-vrG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="D8w-KI-SRm"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -201,6 +210,7 @@
                         <outlet property="Detailtitle" destination="LUj-Zm-Vf6" id="Dhh-FX-rKE"/>
                         <outlet property="ImageView" destination="14T-uN-6LO" id="c2J-57-3tn"/>
                         <outlet property="Price" destination="1dK-jk-7jB" id="mEc-Ka-yJO"/>
+                        <outlet property="completebtn" destination="hZR-cL-Jv0" id="x8n-GX-PuR"/>
                         <outlet property="content" destination="Fpa-mD-SYt" id="1Ig-Oj-xda"/>
                         <outlet property="kakaoid" destination="a52-dB-hxB" id="A5z-zJ-iX8"/>
                         <outlet property="seevalue" destination="6pz-yv-8qT" id="0Qu-7D-4C2"/>
@@ -281,7 +291,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fDL-K8-MJk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="uaC-uX-tfl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1279" y="9"/>
+            <point key="canvasLocation" x="-1204" y="9"/>
         </scene>
         <!--Add View Controller-->
         <scene sceneID="aHh-0F-Nea">

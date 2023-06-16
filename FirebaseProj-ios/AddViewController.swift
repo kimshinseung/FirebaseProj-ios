@@ -47,6 +47,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
         let content = content.text
         let kakaoid = kakaoid.text
         let uid = Auth.auth().currentUser?.uid
+        let visibled = true
         
         var data : [String: Any] = [
             "uploadtime" : uploadtime as Any,
@@ -55,7 +56,8 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
             "content" : content as Any,
             "uid" : uid as Any,
             "kakaoid" : kakaoid as Any,
-            "seevalue" : Int(0) as Any
+            "seevalue" : Int(0) as Any,
+            "visibled" : visibled
         ]
         if let image = ImageView.image {
                 // 업로드할 이미지의 고유한 파일 이름 생성
@@ -76,9 +78,8 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
                                 print("Error getting download URL: \(error!.localizedDescription)")
                                 return
                             }
-                            
+
                             print("Image uploaded successfully. Download URL: \(downloadURL)")
-                            
                             // 다운로드 URL을 파이어스토어 데이터에 추가
                             data["imageURL"] = downloadURL.absoluteString as Any
                             
@@ -86,7 +87,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate & UIN
                             self.saveDataToFirestore(data)
                         }
                     }
-                    
                     uploadTask.observe(.progress) { (snapshot) in
                         // 이미지 업로드 진행 상태 처리
                         guard let progress = snapshot.progress else {
